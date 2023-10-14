@@ -1,26 +1,47 @@
-import { ClerkProvider } from '@clerk/nextjs'
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'notion-clone',
-  description: 'notion-clone',
-}
+  title: "notion-clone",
+  description: "notion-clone fast notes and work day ",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/notion.svg",
+        href: "/notion.svg",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/notion-dark.svg",
+        href: "/notion-dark.svg",
+      },
+    ],
+  },
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="notion-clone-theme"
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
-    </ClerkProvider>
-  )
+  );
 }
