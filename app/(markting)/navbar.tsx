@@ -20,7 +20,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
     <div
       className={cn(
         "z-50 bg-background fixed top-0 flex items-center p-6 w-full  dark:bg-[#1F1F1F]",
-        scrolled && " border-b shadow "
+        scrolled && " border-b shadow w shadow-slate-800  dark:shadow-gray-300"
       )}
     >
       <Logo />
