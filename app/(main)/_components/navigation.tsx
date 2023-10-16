@@ -1,21 +1,39 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronsLeftIcon, MenuIcon } from "lucide-react";
+import {
+  ChevronsLeftIcon,
+  MenuIcon,
+  PlusCircleIcon,
+  SearchIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, FC, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./user-item";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import Item from "./item";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 
 interface NavigationProps {}
 
 const Navigation: FC<NavigationProps> = ({}) => {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width:768px)");
-
+  const create = useMutation(api.documents.create);
   const documents = useQuery(api.documents.get);
+
+  const onCreate = () => {
+    const proimse = create({ title: "Untitled" });
+    toast.promise(proimse, {
+      loading: "Creating a new note ...",
+      success: " new note created !",
+      error: " Failed to create a new note .",
+    });
+  };
 
   const isResizingRef = useRef(false);
   const siderbarRef = useRef<ElementRef<"aside">>(null);
@@ -114,6 +132,19 @@ const Navigation: FC<NavigationProps> = ({}) => {
         </div>
         <div className="">
           <UserItem />
+          <Item
+            onClick={() => {}}
+            label="Search ..."
+            isSearch={true}
+            icon={SearchIcon}
+          />
+          <Item
+            onClick={() => {}}
+            label="Settings"
+
+            icon={SettingsIcon}
+          />
+          <Item onClick={onCreate} icon={PlusCircleIcon} label="New page " />
         </div>
         <div className="mt-4">
           {documents?.map((document) => (
